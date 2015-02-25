@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Matrix</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="css/clean-blog.min.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header page-scroll">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="index.html">Austin Blogs</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                    
+                    <li>
+                        <a href="http://www.austintruchan.net" target="_blank">GO TO PORTFOLIO</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <!-- Page Header -->
+    <!-- Set your background image for this header on the line below. -->
+    <header class="intro-header" style="background-image: url('img/Zak.jpg')">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <div class="post-heading">
+                        <h1>Behind the Scenes</h1>
+                        <h2 class="subheading">The Server Technology that Powers Matrix</h2>
+                        <span class="meta">Posted by <a href="http://www.austintruchan.net/about.html" target="_blank">Austin Truchan</a> on February 23, 2015</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Post Content -->
+    <article>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <p>Matrix, the Center for Digital Humanities and Social Sciences at Michigan State University, is devoted to the application of new technologies for teaching, research, and outreach. As one of the premier humanities computing centers in the United States, Matrix creates and maintains online resources, provides training in computing and new teaching technologies, and creates forums for the exchange of ideas and expertise in the field. Matrix is the hosting platform many popular digital humanity repository and reservation systems. I wanted to explore what powers these systems to continue being functional day in and day out, and what exactly keeps them live. Let's take a look behind the scenes.</p>
+
+                    <p>I was able to meet up with Zak Schlemmer, the Systems Architect of Matrix, who was able to briefly explain the technology stack that keeps Matrix alive and well. He showed me into a small, incredibly loud room that was filled with 40 physical servers split into two racks, 3 air conditions and a backup battery as tall as I am. Along with the physical servers, are 4 virtual parent machines that run 25 virtual servers each, which split up different applications and duties. For example, one of the physical servers, titled Kraid, after the Nintendo character, can run and control up to 10 other virtual servers. This is done using a technology called XEN.</p>
+                    
+                    <a href="#">
+                        <img class="img-responsive" src="img/Server.jpg" alt="">
+                    </a>
+                    <span class="caption text-muted">One of the two server stacks featured at Matrix.</span>
+
+                    <p>Zak continued to explain that Matrix has a physical dev Apache, and a physical dev database server (named Peach, and Rush, also after the Nintendo characters). I was then told that all of the servers at Matrix, are named after Nintendo characters.
+</p>
+
+                    <p>Two disc farms are in existence, Ken and Irene, that are mirrored, and connected to the rest of the apache physical servers, so that if one has a problem, the other one can take over through this technology called Heartbeat. "Ken and Irene are constantly syncing with each other. If ken is the active disc farm, then Irene is actively syncing the various changes that happen on Ken, and if Heartbeat detects there is problem with Ken, or it's not responding, Heartbeat will switch the active disc farm over to Irene," Zak explained. Many other paired servers will use Heartbeat in the same way, for example the servers named Chomp and Thwomp. Chomp and Thwomp use a technology called HAProxy, which "handles load distribution for live Apache."</p>
+
+                    <p>There is also Mario and Luigi, both physical servers running Apache, along with Firesnake, Drybones, and Boo, which are all virtual servers also running Apache that all come in on a .29 IP address. This IP address is the address that all matrix sites resolve to, which is also the address for Chomp or Thwomp. Chomp and Thwomp, then take that connection, conduct a "Round Robin, which means, going down a list over and over," and send the connections to all the various Apache servers on the list.</p>
+
+                    <p>Two other servers (Link and Zelda) use a technology called LDAP, similar to Heartbeat, and are in control of all the authentication services across Matrix's systems. "If Link is down, Zelda takes over, and vice versa".</p>
+
+                    <p>Another physical server, which Zak referred to as the FAI Host, allows Zak through the technology called CFEngine Config Push System, to do a PXE boot which tells the FAI Host, to boot from a previous config file in order to backup or revert to to old server systems. "Say I have a virtual machine die, I can just rebuild it, and the FAI Host knows exactly how to rebuild the virtual machine," Zak explained, "The FAI Host is independent from the rest of the servers, but controls and manages how all of the other servers are built." The FAI Host also allows Zak to make a change across many servers all at once, instead of changing each server individually.</p>
+                    
+                    <p>After having felt like everything Zak explained to me went right over my head, we left the server room to talk more about the servers within Zak's office and in order to get away from the noisy server room. "The entire system of servers work as a whole. All of the servers you just saw, they all work together to run any single web page that we host."
+</p>
+
+                    <blockquote>"The entire system of servers work as a whole. All of the servers you just saw, they all work together to run any single web page that we host."
+</blockquote>
+
+                    <p>Zak then began explaining to me the server, "MegaMan", AKA Zak's favorite server. MegaMan is Matrix's newest Database server. MegaMan has a whopping 128 gb of ram, and 8 Intel Xeon cpu v2 at 2.5 ghz processors. Zak went on to explain that each server has completely different specs, but spoke specifically on how the Mario server is better than the Luigi server. The Luigi server had crashed the day previously, but Zak was able to restore the Luigi using the CFEngine Config Push System and was able to rebuild it from scratch.</p>
+
+
+                    <p>With technologies such as Heartbeat, XEN, HAPROXY, LDAP, the CFEngine Config Push System and many others, Zak is able to manage the servers of Matrix, keeping them live day in and out, restoring crashed servers, and making sure everything at the company is running smoothly. Zak is a crucial component to the team at Matrix, as without him, Matrix would be nothing.</p>
+
+                </div>
+            </div>
+        </div>
+    </article>
+
+    <hr>
+
+    <!-- Footer -->
+     <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <ul class="list-inline text-center">
+                        <li>
+                            <a href="https://twitter.com/austintruchan" target="_blank">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.facebook.com/atruchan" target="_blank">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://github.com/austintruchan" target="_blank">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                    <p class="copyright text-muted">Austin Truchan 2015</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- jQuery -->
+    <script src="js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
+
+    <!-- Custom Theme JavaScript -->
+    <script src="js/clean-blog.min.js"></script>
+
+</body>
+
+</html>
